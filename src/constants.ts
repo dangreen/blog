@@ -1,4 +1,3 @@
-const now = /* @__PURE__ */ new Date()
 const DECEMBER = 11
 const JANUARY = 0
 const WEEK_BEFORE_NEW_YEAR_START = 24
@@ -6,6 +5,7 @@ const WEEK_AFTER_NEW_YEAR_END = 7
 const EMOJIS = ['💚', '🍀', '🌲', '☘️', '🌿', '🥑', '🌱', '🌳', '🥝', '🍏', '🟢', '🍋‍🟩', '🐉', '🦖']
 
 function getRandomEmoji() {
+  const now = new Date()
   let emoji = ''
 
   if (
@@ -26,10 +26,16 @@ export const Site = {
 }
 
 export const Giscus = {
-  repo: 'trevortylerlee/astro-micro',
-  repoId: 'R_kgDOL_6l9Q',
+  repo: 'dangreen/blog',
+  repoId: 'R_kgDORA2ciA',
   category: 'Announcements',
-  categoryId: 'DIC_kwDOL_6l9c4Cfk55'
+  categoryId: 'DIC_kwDORA2ciM4C1Z5Y',
+  mapping: 'title',
+  strict: '1',
+  reactions: '1',
+  emitMetadata: '0',
+  inputPosition: 'top',
+  lang: 'en'
 }
 
 export const Palette = [
