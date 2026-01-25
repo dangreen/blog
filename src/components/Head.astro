@@ -113,3 +113,10 @@ const optimizedImage = image && await getImage({
   property='twitter:image'
   content={new URL(optimizedImage.src, Astro.url)}
 />
+
+<script
+  is:inline
+  defer
+  src='https://cloud.umami.is/script.js'
+  data-website-id='a598310e-0a0b-4a3f-b9fb-e361bc63a2da'
+/>
