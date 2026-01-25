@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content'
+import {
+  selectPublished,
+  selectTags
+} from '~/utils'
+import Layout from '~/layouts/Layout.astro'
+import Container from '~/components/Container.astro'
+import PostCard from '~/components/PostCard.astro'
+
+export async function getStaticPaths() {
+  const posts = await selectPublished(getCollection('posts'))
+  const tags = selectTags(posts)
+
+  return tags.map(tag => ({
+    params: {
+      id: tag
+    },
+    props: {
+      posts: posts.filter(post => post.data.tags?.includes(tag))
+    }
+  }))
+}
+
+const { id } = Astro.params
+const { posts } = Astro.props
+---
+
+<Layout
+  title={`Tag: ${id}`}
+  description={`Posts with the tag: ${id}`}
+>
+  <Container>
+    <div
+      class='space-y-7'
+      data-pagefind-ignore
+    >
+      <div class='flex flex-row gap-2 items-center justify-between flex-wrap'>
+        <h1 class='font-semibold'>
+          Posts tagged with "{id}"
+        </h1>
+        <a
+          href='/tags'
+          class='hover:text-black/90 dark:hover:text-white/90 transition-colors underline'
+        >
+          See all tags
+        </a>
+      </div>
+      <ul class='flex flex-col gap-4'>
+        {posts.map(post => <PostCard entry={post}/>)}
+      </ul>
+    </div>
+  </Container>
+</Layout>

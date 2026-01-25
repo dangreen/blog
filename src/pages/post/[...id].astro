@@ -1,0 +1,156 @@
+---
+import { getCollection, render } from 'astro:content'
+import { Picture } from 'astro:assets'
+import {
+  selectPublishedAndTranslations,
+  getTagColor,
+  readingTime
+} from '~/utils'
+import Layout from '~/layouts/Layout.astro'
+import Container from '~/components/Container.astro'
+import FormattedDate from '~/components/FormattedDate.astro'
+import PostNavigation from '~/components/PostNavigation.astro'
+import TableOfContents from '~/components/TableOfContents.astro'
+import Giscus from '~/components/Giscus.astro'
+import CopyCode from '~/components/CopyCode.astro'
+
+export async function getStaticPaths() {
+  const [
+    originals,
+    translations
+  ] = await selectPublishedAndTranslations(getCollection('posts'))
+
+  return originals
+    .map((post, i) => ({
+      params: {
+        id: post.id
+      },
+      props: {
+        post,
+        prevPost: originals[i - 1],
+        nextPost: originals[i + 1]
+      }
+    }))
+    .concat(
+      translations.map(post => ({
+        params: {
+          id: post.id
+        },
+        props: {
+          post,
+          prevPost: undefined,
+          nextPost: undefined
+        }
+      }))
+    )
+}
+
+const {
+  post,
+  nextPost,
+  prevPost
+} = Astro.props
+const {
+  Content,
+  headings
+} = await render(post)
+const {
+  tags,
+  translations
+} = post.data
+---
+
+<CopyCode/>
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  image={post.data.cover}
+>
+  <Container>
+    {post.data.cover && (
+      <Picture
+        src={post.data.cover}
+        alt={`Cover image for ${post.data.title}`}
+        formats={['avif', 'webp', 'jpeg']}
+        class='w-full h-auto rounded-lg object-cover'
+        style='aspect-ratio: 100 / 42'
+      />
+    )}
+    <div class='my-10 space-y-1'>
+      <div class='flex items-center gap-1.5'>
+        <div class='font-base text-sm'>
+          <FormattedDate date={post.data.date}/>
+        </div>
+        &bull;
+        {post.body && (
+          <div class='font-base text-sm'>
+            {readingTime(post.body)} min read
+          </div>
+        )}
+      </div>
+      <h1 class='text-3xl font-semibold text-black dark:text-white'>
+        {post.data.title}
+      </h1>
+      {tags?.length
+        ? (
+          <div class='flex gap-2 pt-2'>
+            {tags.map((tag) => {
+              const colors = getTagColor(tag)
+
+              return (
+                <a href={`/tags/${tag}`}>
+                  <span
+                    class='rounded-full px-2 py-1 text-xs font-medium dark:hidden'
+                    style={colors.light}
+                  >
+                    {tag}
+                  </span>
+                  <span
+                    class='rounded-full px-2 py-1 text-xs font-medium hidden dark:block'
+                    style={colors.dark}
+                  >
+                    {tag}
+                  </span>
+                </a>
+              )
+            })}
+          </div>
+        )
+        : null}
+      {translations?.length
+        ? (
+          <div class='pt-2'>
+            <span class='text-sm text-black/60 dark:text-white/60'>Available translations: </span>
+            {translations.map((translation, index) => (
+              <>
+                <a
+                  href={`/${post.collection.replace(/s$/, '')}/${post.id}-${translation}`}
+                  class='text-sm hover:underline text-black/60 dark:text-white/60'
+                >
+                  {translation.toUpperCase()}
+                </a>
+                {index < translations.length - 1 && ', '}
+              </>
+            ))}
+          </div>
+        )
+        : null}
+    </div>
+    {headings.length > 0 && <TableOfContents headings={headings}/>}
+    <article>
+      <Content/>
+    </article>
+    {Boolean(prevPost || nextPost) && (
+      <div class='mt-24'>
+        <PostNavigation
+          prevPost={prevPost}
+          nextPost={nextPost}
+        />
+      </div>
+    )}
+    <div class='mt-24'>
+      <Giscus/>
+    </div>
+  </Container>
+</Layout>

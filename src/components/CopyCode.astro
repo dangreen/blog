@@ -1,0 +1,70 @@
+<style is:global>
+  @reference '../styles/global.css';
+
+  .copy-code {
+    @apply absolute right-3 top-3 grid size-9 place-content-center rounded-sm border border-black/15 bg-neutral-100 text-center duration-300 ease-in-out dark:border-white/20 dark:bg-neutral-900;
+  }
+
+  .copy-code:hover {
+    @apply bg-[#E9E9E9] transition-colors dark:bg-[#232323];
+  }
+
+  .copy-code:active {
+    @apply scale-90 transition-transform;
+  }
+</style>
+
+<script>
+  const COPY_LABEL = '📋'
+  const COPIED_LABEL = '✅'
+  const ARIA_LABEL_COPY = 'Copy code to clipboard'
+  const ARIA_LABEL_COPIED = 'Code copied to clipboard'
+
+  async function onClick(event: MouseEvent) {
+    const button = event.currentTarget as HTMLButtonElement
+    const code = button.parentElement?.firstElementChild as HTMLElement
+    const text = code.innerText
+
+    await navigator.clipboard.writeText(text)
+
+    button.innerText = COPIED_LABEL
+    button.setAttribute('aria-label', ARIA_LABEL_COPIED)
+
+    setTimeout(() => {
+      button.innerText = COPY_LABEL
+      button.setAttribute('aria-label', ARIA_LABEL_COPY)
+    }, 2000)
+  }
+
+  function button() {
+    const button = document.createElement('button')
+
+    button.className = 'copy-code'
+    button.innerText = COPY_LABEL
+    button.setAttribute('aria-label', ARIA_LABEL_COPY)
+    button.addEventListener('click', onClick)
+
+    return button
+  }
+
+  function insert(pre: HTMLPreElement, button: HTMLButtonElement) {
+    if (pre.querySelector('.copy-code')) {
+      return
+    }
+
+    pre.style.position = 'relative'
+    pre.setAttribute('tabindex', '0')
+    pre.appendChild(button)
+  }
+
+  function onPageLoad() {
+    for (const pre of document.querySelectorAll('pre.astro-code')) {
+      insert(
+        pre as HTMLPreElement,
+        button()
+      )
+    }
+  }
+
+  onPageLoad()
+</script>

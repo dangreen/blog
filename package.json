@@ -1,0 +1,62 @@
+{
+  "name": "blog",
+  "type": "module",
+  "private": true,
+  "version": "0.0.0",
+  "description": "My personal blog.",
+  "author": "dangreen",
+  "license": "MIT",
+  "funding": "https://ko-fi.com/dangreen",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dangreen/blog.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dangreen/blog/issues"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "scripts": {
+    "clear": "del ./.astro ./dist",
+    "dev": "astro dev",
+    "build": "run clear [ astro check ] [ astro build ]",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint": "eslint --flag v10_config_lookup_from_file",
+    "commit": "cz",
+    "updateGitHooks": "simple-git-hooks"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/mdx": "^4.3.5",
+    "@astrojs/rss": "^4.0.12",
+    "@astrojs/sitemap": "^3.6.0",
+    "@tailwindcss/vite": "^4.1.13",
+    "astro": "^5.13.9",
+    "astro-pagefind": "^1.8.5",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.13"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@commitlint/cz-commitlint": "^19.8.1",
+    "@tailwindcss/typography": "^0.5.18",
+    "@trigen/eslint-config": "^8.3.0",
+    "@trigen/scripts": "^8.0.4",
+    "@types/node": "^24.0.14",
+    "@typescript-eslint/parser": "^8.53.1",
+    "commitizen": "^4.2.4",
+    "del-cli": "^6.0.0",
+    "eslint": "^9.31.0",
+    "eslint-plugin-astro": "^1.5.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "nano-staged": "^0.8.0",
+    "pagefind": "^1.4.0",
+    "sharp": "^0.34.5",
+    "simple-git-hooks": "^2.7.0",
+    "typescript": "^5.9.2"
+  }
+}

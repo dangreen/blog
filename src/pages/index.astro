@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content'
+import { selectPublished } from '~/utils'
+import Layout from '~/layouts/Layout.astro'
+import Container from '~/components/Container.astro'
+import PostCard from '~/components/PostCard.astro'
+
+const posts = await selectPublished(getCollection('posts'))
+---
+
+<Layout>
+  <Container>
+    <aside data-pagefind-ignore>
+      <div class='space-y-10'>
+        <div class='space-y-4'>
+          <ul class='not-prose flex flex-col gap-4'>
+            {posts.map(post => (
+              <li>
+                <PostCard entry={post}/>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </aside>
+  </Container>
+</Layout>

@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content'
+import {
+  selectPublished,
+  selectTags,
+  getTagColor
+} from '~/utils'
+import Layout from '~/layouts/Layout.astro'
+import Container from '~/components/Container.astro'
+
+const posts = await selectPublished(getCollection('posts'))
+const tags = selectTags(posts)
+---
+
+<Layout
+  title='Tags'
+  description='List of tags used.'
+>
+  <Container>
+    <div class='space-y-7'>
+      <h1 class='font-semibold'>All Tags</h1>
+      <div class='flex flex-wrap gap-4'>
+        {
+          tags.map((tag) => {
+            const colors = getTagColor(tag)
+            const count = posts.filter(post => post.data.tags?.includes(tag)).length
+
+            return (
+              <a href={`/tags/${tag}`}>
+                <span
+                  class='rounded-full px-4 py-2 text-sm font-medium dark:hidden'
+                  style={colors.light}
+                >
+                  {tag} ({count})
+                </span>
+                <span
+                  class='rounded-full px-4 py-2 text-sm font-medium hidden dark:block'
+                  style={colors.dark}
+                >
+                  {tag} ({count})
+                </span>
+              </a>
+            )
+          })
+        }
+      </div>
+    </div>
+  </Container>
+</Layout>

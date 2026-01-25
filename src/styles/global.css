@@ -1,0 +1,108 @@
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/typography';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@layer utilities {
+  html {
+    overflow-y: auto;
+    color-scheme: light;
+    scroll-padding-top: 100px;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  html {
+    @apply w-full;
+  }
+
+  body {
+    @apply size-full;
+    @apply font-sans antialiased;
+    @apply flex flex-col;
+    @apply bg-neutral-100 dark:bg-neutral-900;
+    @apply text-black/75 dark:text-white/75;
+  }
+
+  article {
+    @apply prose prose-neutral max-w-full dark:prose-invert prose-img:mx-auto prose-img:my-auto;
+    @apply prose-headings:font-semibold;
+    @apply prose-headings:text-black dark:prose-headings:text-white;
+  }
+
+  article a {
+    @apply font-sans text-current underline underline-offset-[3px];
+    @apply decoration-black/30 dark:decoration-white/30;
+    @apply transition-colors duration-300 ease-in-out;
+  }
+
+  article a:hover {
+    @apply text-black dark:text-white;
+    @apply decoration-black/50 dark:decoration-white/50;
+  }
+
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+pre {
+  @apply border border-black/15 py-5 dark:border-white/20;
+}
+
+:root {
+  --astro-code-background: oklch(97% 0.005 255);
+  --astro-code-foreground: oklch(25% 0.01 254.09);
+  --astro-code-token-comment: oklch(46% 0.03 260);
+  --astro-code-token-keyword: oklch(53% 0.22 28);
+  --astro-code-token-string: oklch(32% 0.11 264);
+  --astro-code-token-function: oklch(46% 0.18 286);
+  --astro-code-token-constant: var(--astro-code-foreground);
+  --astro-code-token-parameter: oklch(42% 0.16 45);
+  --astro-code-token-string-expression: var(--astro-code-token-string);
+  --astro-code-token-punctuation: var(--astro-code-foreground);
+  --astro-code-token-link: oklch(32% 0.11 264);
+}
+
+.dark {
+  --astro-code-background: oklch(26% 0 0);
+  --astro-code-foreground: oklch(97% 0.01 255);
+  --astro-code-token-comment: oklch(67% 0.02 260);
+  --astro-code-token-keyword: oklch(71% 0.16 25);
+  --astro-code-token-string: oklch(86% 0.08 245);
+  --astro-code-token-function: oklch(80% 0.13 295);
+  --astro-code-token-constant: var(--astro-code-foreground);
+  --astro-code-token-parameter: oklch(80% 0.14 60);
+  --astro-code-token-string-expression: var(--astro-code-token-string);
+  --astro-code-token-punctuation: var(--astro-code-foreground);
+  --astro-code-token-link: oklch(86% 0.08 245);
+}

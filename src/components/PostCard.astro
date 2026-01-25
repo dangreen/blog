@@ -1,0 +1,58 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import { getTagColor } from '~/utils'
+import FormattedDate from './FormattedDate.astro'
+
+interface Props {
+  entry: CollectionEntry<'posts'>
+}
+
+const { entry } = Astro.props
+---
+
+<a
+  href={`/${entry.collection.replace(/s$/, '')}/${entry.id}`}
+  class='group relative block overflow-hidden rounded-lg border border-black/15 p-6 transition-colors duration-300 hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/5'
+>
+  <div class='mb-2 flex items-center gap-2 text-sm text-black/60 dark:text-white/60'>
+    <FormattedDate date={entry.data.date}/>
+  </div>
+
+  <h2 class='mb-3 text-xl font-bold text-black transition-colors group-hover:text-black dark:text-white dark:group-hover:text-white'>
+    {entry.data.title}
+  </h2>
+
+  <p class='text-black/70 dark:text-white/70 line-clamp-3'>
+    {entry.data.description}
+  </p>
+
+  <div class='mt-4 flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center sm:gap-2'>
+    {Boolean(entry.data.tags?.length) && (
+      <div class='flex flex-wrap gap-2'>
+        {entry.data.tags?.map((tag) => {
+          const colors = getTagColor(tag)
+
+          return (
+            <>
+              <span
+                class='rounded-full px-2 py-1 text-xs font-medium dark:hidden'
+                style={colors.light}
+              >
+                {tag}
+              </span>
+              <span
+                class='rounded-full px-2 py-1 text-xs font-medium hidden dark:block'
+                style={colors.dark}
+              >
+                {tag}
+              </span>
+            </>
+          )
+        })}
+      </div>
+    )}
+    <span class='text-sm font-medium text-black/70 dark:text-white/70 whitespace-nowrap'>
+      Read more →
+    </span>
+  </div>
+</a>

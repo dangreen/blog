@@ -1,0 +1,63 @@
+<script>
+  import { Giscus } from '~/constants'
+  import {
+    getThemeValue,
+    observeTheme
+  } from './theme'
+
+  function createGiscusScript(theme?: string) {
+    const script = document.createElement('script')
+
+    script.id = 'giscus-script'
+    script.src = 'https://giscus.app/client.js'
+    script.setAttribute('data-repo', Giscus.repo)
+    script.setAttribute('data-repo-id', Giscus.repoId)
+    script.setAttribute('data-category', Giscus.category)
+    script.setAttribute('data-category-id', Giscus.categoryId)
+    script.setAttribute('data-mapping', 'pathname')
+    script.setAttribute('data-strict', '0')
+    script.setAttribute('data-reactions-enabled', '1')
+    script.setAttribute('data-emit-metadata', '0')
+    script.setAttribute('data-input-position', 'top')
+    script.setAttribute('data-theme', theme === 'light' || theme === 'dark' ? theme : 'preferred_color_scheme')
+    script.setAttribute('data-lang', 'en')
+    script.setAttribute('data-loading', 'lazy')
+    script.crossOrigin = 'anonymous'
+    script.async = true
+
+    return script
+  }
+
+  function onPageLoad() {
+    if (!document.querySelector('.giscus') || document.getElementById('giscus-script')) {
+      return
+    }
+
+    const script = createGiscusScript(getThemeValue())
+
+    document.body.appendChild(script)
+
+    observeTheme((theme) => {
+      const giscus = document.querySelector('.giscus-frame') as HTMLIFrameElement | null
+      const giscusWindow = giscus?.contentWindow
+
+      if (giscusWindow) {
+        try {
+          giscusWindow.postMessage({
+            giscus: {
+              setConfig: {
+                theme
+              }
+            }
+          }, 'https://giscus.app')
+        } catch {
+          /* ignore */
+        }
+      }
+    })
+  }
+
+  onPageLoad()
+</script>
+
+<div class='giscus'/>
