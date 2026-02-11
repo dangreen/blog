@@ -1,3 +1,5 @@
+const { classList } = document.documentElement
+
 export function resolveThemeValue(themeValue: string | undefined) {
   // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
   switch (themeValue) {
@@ -12,9 +14,11 @@ export function resolveThemeValue(themeValue: string | undefined) {
 
 export function toggleTheme(dark: boolean) {
   if (dark) {
-    document.documentElement.classList.add('dark')
+    classList.add('dark')
+    classList.remove('light')
   } else {
-    document.documentElement.classList.remove('dark')
+    classList.remove('dark')
+    classList.add('light')
   }
 }
 
@@ -23,27 +27,24 @@ export function getThemeValue(): string {
 }
 
 export function observeTheme(observer: (theme: string) => void) {
-  const documentElement = document.documentElement
-  let wasPresent = documentElement.classList.contains('dark')
+  let wasDark = classList.contains('dark')
   const mo = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.attributeName !== 'class') {
-        return
-      }
+    if (!mutations.some(mutation => mutation.attributeName === 'class')) {
+      return
+    }
 
-      const isPresent = documentElement.classList.contains('dark')
+    const isDark = classList.contains('dark')
 
-      if (isPresent && !wasPresent) {
-        observer('dark')
-      } else if (!isPresent && wasPresent) {
-        observer('light')
-      }
+    if (isDark && !wasDark) {
+      observer('dark')
+    } else if (!isDark && wasDark) {
+      observer('light')
+    }
 
-      wasPresent = isPresent
-    })
+    wasDark = isDark
   })
 
-  mo.observe(documentElement, {
+  mo.observe(document.documentElement, {
     attributes: true,
     attributeFilter: ['class']
   })

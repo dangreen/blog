@@ -79,30 +79,6 @@ pre {
   @apply border border-black/15 py-5 dark:border-white/20;
 }
 
-:root {
-  --astro-code-background: oklch(97% 0.005 255);
-  --astro-code-foreground: oklch(25% 0.01 254.09);
-  --astro-code-token-comment: oklch(46% 0.03 260);
-  --astro-code-token-keyword: oklch(53% 0.22 28);
-  --astro-code-token-string: oklch(32% 0.11 264);
-  --astro-code-token-function: oklch(46% 0.18 286);
-  --astro-code-token-constant: var(--astro-code-foreground);
-  --astro-code-token-parameter: oklch(42% 0.16 45);
-  --astro-code-token-string-expression: var(--astro-code-token-string);
-  --astro-code-token-punctuation: var(--astro-code-foreground);
-  --astro-code-token-link: oklch(32% 0.11 264);
-}
-
-.dark {
-  --astro-code-background: oklch(26% 0 0);
-  --astro-code-foreground: oklch(97% 0.01 255);
-  --astro-code-token-comment: oklch(67% 0.02 260);
-  --astro-code-token-keyword: oklch(71% 0.16 25);
-  --astro-code-token-string: oklch(86% 0.08 245);
-  --astro-code-token-function: oklch(80% 0.13 295);
-  --astro-code-token-constant: var(--astro-code-foreground);
-  --astro-code-token-parameter: oklch(80% 0.14 60);
-  --astro-code-token-string-expression: var(--astro-code-token-string);
-  --astro-code-token-punctuation: var(--astro-code-foreground);
-  --astro-code-token-link: oklch(86% 0.08 245);
+.dark .expressive-code .frame {
+  --code-background: oklch(26% 0 0);
 }

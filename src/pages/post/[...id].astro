@@ -12,7 +12,6 @@ import FormattedDate from '~/components/FormattedDate.astro'
 import PostNavigation from '~/components/PostNavigation.astro'
 import TableOfContents from '~/components/TableOfContents.astro'
 import Giscus from '~/components/Giscus.astro'
-import CopyCode from '~/components/CopyCode.astro'
 
 export async function getStaticPaths() {
   const [
@@ -59,8 +58,6 @@ const {
   translations
 } = post.data
 ---
-
-<CopyCode/>
 
 <Layout
   title={post.data.title}
