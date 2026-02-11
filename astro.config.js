@@ -12,6 +12,9 @@ export default defineConfig({
       useDarkModeMediaQuery: false,
       themeCssSelector: theme => (theme.type === 'dark' ? '.dark' : '.light'),
       themes: ['github-dark-default', 'github-light-default'],
+      frames: {
+        extractFileNameFromCode: false
+      },
       styleOverrides: {
         borderWidth: '1px',
         frames: {
