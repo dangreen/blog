@@ -45,9 +45,9 @@
     "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
-    "@commitlint/cz-commitlint": "^19.8.1",
+    "@commitlint/cli": "^20.0.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@commitlint/cz-commitlint": "^20.0.0",
     "@tailwindcss/typography": "^0.5.18",
     "@trigen/eslint-config": "^8.3.0",
     "@trigen/scripts": "^8.0.4",
