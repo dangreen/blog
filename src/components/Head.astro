@@ -19,11 +19,6 @@ const {
 const ogImage = image && await getImage({
   src: image,
   format: 'jpg',
-  quality: 'high'
-})
-const twitterImage = image && await getImage({
-  src: image,
-  format: 'jpg',
   quality: 'high',
   width: 1200,
   height: 630,
@@ -132,7 +127,7 @@ const twitterImage = image && await getImage({
 />
 <meta
   name='twitter:image'
-  content={new URL(twitterImage.src, Astro.url)}
+  content={new URL(ogImage.src, Astro.url)}
 />
 
 <script
