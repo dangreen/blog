@@ -54,7 +54,7 @@
     "@types/node": "^24.0.14",
     "@typescript-eslint/parser": "^8.53.1",
     "commitizen": "^4.2.4",
-    "del-cli": "^6.0.0",
+    "del-cli": "^7.0.0",
     "eslint": "^9.31.0",
     "eslint-plugin-astro": "^1.5.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
