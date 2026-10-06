@@ -19,7 +19,7 @@
     "astro"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=24"
   },
   "scripts": {
     "clear": "del ./.astro ./dist",

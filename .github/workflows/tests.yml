@@ -12,13 +12,13 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v5
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
-          version: 10
+          version: 12
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version-file: .tool-versions
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
