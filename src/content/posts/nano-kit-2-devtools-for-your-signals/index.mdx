@@ -1,0 +1,78 @@
+---
+title: "Nano Kit 2.0: DevTools for Your Signals, Right on the Page"
+description: "Nano Kit 2.0 adds an in-page DevTools panel: every signal with its value and owner, a log of every write and what it caused."
+date: 2026-10-22
+cover: ./cover.jpg
+tags:
+  - state-management
+  - signals
+  - devtools
+---
+
+import { Image } from 'astro:assets'
+import signalsLight from './devtools-signals_light.png'
+import signalsDark from './devtools-signals_dark.png'
+import logLight from './devtools-log_light.png'
+import logDark from './devtools-log_dark.png'
+
+[Nano Kit](https://nano-kit.js.org) is a set of small libraries built on one signals core: [stores](https://nano-kit.js.org/store/), a [router](https://nano-kit.js.org/router/), [data fetching](https://nano-kit.js.org/query/), [i18n](https://nano-kit.js.org/intl/) and [SSR](https://nano-kit.js.org/ssr/), with adapters for React, Preact and Svelte. [Version 2.0](https://github.com/TrigenSoftware/nano_kit/releases/tag/v2.0.0) is out, and its main feature is the one I missed most while building apps with it: a DevTools panel that shows what your signals are doing.
+
+The quickest way to see it is the [weather example on StackBlitz](https://stackblitz.com/github/TrigenSoftware/nano_kit/tree/main/examples/weather/react-nano_kit-di?file=src/stores/location.ts). Wait for it to start, type a city and press Alt+Shift+D (⌥⇧D on a Mac).
+
+<Image src={signalsLight} alt='The Signals tab: the signals of a weather app grouped by the stores they were created in, and the inspector of a selected computed' class='dark:hidden' />
+<Image src={signalsDark} alt='The Signals tab: the signals of a weather app grouped by the stores they were created in, and the inspector of a selected computed' class='hidden dark:block' />
+
+## What the panel shows
+
+**Signals.** Every signal and computed in the app, grouped by the store, component or file that created it, with its kind, value and state. A signal doesn't know the name of the variable you assigned it to, so the panel gives each one a short memorable name like `brave-moth`, next to the file and line where it was created. Your stores need no changes for this: there's nothing to register and nothing to wrap.
+
+**Log.** Every transaction as one row: the writes that started it and everything they caused, computeds and effects, with the time each took. The slowest run is called out, so a heavy computed is easy to spot.
+
+<Image src={logLight} alt='The Log tab: a transaction opened into the writes, computeds and effects it ran, with their owners and durations' class='dark:hidden' />
+<Image src={logDark} alt='The Log tab: a transaction opened into the writes, computeds and effects it ran, with their owners and durations' class='hidden dark:block' />
+
+**Inspector.** Pick any node to see its value as a tree you can expand, the code of a computed, what it reads, what reads it, and its recent history.
+
+You can filter everything by name, file or value, and pause the log when the app gets chatty. It works the same whichever adapter renders your app: React, Preact or Svelte.
+
+## What it costs
+
+Nothing in production. Install `@nano_kit/devtools` as a dev dependency and call it once, behind your bundler's development flag:
+
+```ts title="src/devtools.ts"
+import { devtools } from '@nano_kit/devtools'
+
+if (import.meta.env.DEV) {
+  devtools()
+}
+```
+
+Import this file first in your entry point, so the stores created by the modules after it are named from the start:
+
+```ts title="src/main.ts"
+import './devtools'
+import { App } from './App'
+```
+
+In a production build the condition is false, and the call goes away together with the whole package. The core packages work the same way: they ship a development build and a production build, and only the development build reports to the panel. Vite picks the right one by itself, so your production bundle doesn't carry the hooks either.
+
+There's no browser extension to install and no bundler plugin to configure. The panel lives on your page, isolated from your styles, and a strict Content Security Policy doesn't block it.
+
+## Also in 2.0
+
+- **Development warnings.** In development, the packages warn about common mistakes: a route parameter missing from a path, a message missing for the current locale, a value the client tries to hydrate that the server never sent.
+- **Tasks on signals.** SSR and tests wait only for the data they need, not for every request in flight.
+- **Smarter dependency injection.** Nested contexts share stores unless they override something those stores depend on, and the new `provideAs` swaps an implementation, like a mock API in tests.
+- **`SignalsMap` class.** The reactive map now has the familiar `Map` API.
+- **Operators.** `pick`, `text` and `latest` are new, and an operator with static operands returns a plain value.
+- **intl.** `relativetime()` picks the unit by itself, from "5 minutes ago" to "yesterday", and `format()` messages accept signals.
+- **Preact 11 and SvelteKit 3** are supported.
+
+Version 2.0 has breaking changes. The [release notes](https://github.com/TrigenSoftware/nano_kit/releases/tag/v2.0.0) have an Upgrading from 1.x section with the usual edits, followed by the full list.
+
+## Try it
+
+- 🛠️ [DevTools](https://nano-kit.js.org/store/devtools/): install the panel and open it with Alt+Shift+D
+- ⚡ [Weather example on StackBlitz](https://stackblitz.com/github/TrigenSoftware/nano_kit/tree/main/examples/weather/react-nano_kit-di?file=src/stores/location.ts): the panel is already wired in
+- 📚 [Documentation](https://nano-kit.js.org): start with the [introduction](https://nano-kit.js.org/getting-started/), or see how Nano Kit [compares](https://nano-kit.js.org/getting-started/comparison/) with Zustand, Jotai, TanStack Query and Nano Stores
+- ⭐ [GitHub](https://github.com/TrigenSoftware/nano_kit): stars appreciated
